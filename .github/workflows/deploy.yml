@@ -18,8 +18,8 @@ jobs:
 
       - name: Fetch Environment Configuration
         run: |
-          git clone https://github.com/your-org/github-environments.git environments
-          cat environments/${{ inputs.environment }}.yaml
+          git clone https://github.com/yevhenkainaraideals/github-pipeline-templates-public.git environments
+          cat environments/environments/${{ inputs.environment }}.yaml
 
       - name: Require Manual Approval for Production
         if: inputs.environment == 'production'
