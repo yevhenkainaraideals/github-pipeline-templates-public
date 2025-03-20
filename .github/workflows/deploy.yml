@@ -6,37 +6,37 @@ on:
       environment:
         required: true
         type: string
-      aws_region:
-        required: true
-        type: string
-      resource_prefix:
-        required: true
-        type: string
-    secrets:
-      AWS_SECRET:
-        required: true
+    secrets: inherit  # ✅ Inherits all secrets from the calling workflow
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}  # Assign GitHub Environment for approvals
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Fetch Environment Configuration
+        run: |
+          git clone https://github.com/your-org/github-environments.git environments
+          cat environments/${{ inputs.environment }}.yaml
 
       - name: Require Manual Approval for Production
         if: inputs.environment == 'production'
         run: echo "Waiting for manual approval..."  # GitHub Environments handle approval
 
       - name: Configure AWS CLI
-        run: aws configure set region ${{ inputs.aws_region }}
+        run: |
+          REGION=$(yq '.aws_region' environments/${{ inputs.environment }}.yaml)
+          aws configure set region $REGION
 
       - name: Deploy Resources
         run: |
+          REGION=$(yq '.aws_region' environments/${{ inputs.environment }}.yaml)
+          PREFIX=$(yq '.resource_prefix' environments/${{ inputs.environment }}.yaml)
           echo "🚀 Deploying to ${{ inputs.environment }}"
-          echo "🌍 AWS Region: ${{ inputs.aws_region }}"
-          echo "🛠️ Resource Prefix: ${{ inputs.resource_prefix }}"
+          echo "🌍 AWS Region: $REGION"
+          echo "🛠️ Resource Prefix: $PREFIX"
 
       - name: Notify Deployment Success
         run: echo "✅ Deployment to ${{ inputs.environment }} completed!"
