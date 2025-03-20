@@ -6,7 +6,7 @@ on:
       environment:
         required: true
         type: string
-    secrets: inherit  # ✅ Inherits all secrets from the calling workflow
+#    secrets: inherit  # ✅ Inherits all secrets from the calling workflow
 
 jobs:
   deploy:
