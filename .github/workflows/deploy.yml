@@ -3,6 +3,9 @@ name: Reusable Deployment Workflow
 on:
   workflow_call:
     inputs:
+      environment:
+        required: true
+        type: string
       aws_region:
         required: true
         type: string
@@ -16,23 +19,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}  # Assign GitHub Environment
+    environment: ${{ inputs.environment }}  # Assign GitHub Environment for approvals
+
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Require Manual Approval for Production
-        if: github.event.inputs.environment == 'production'
-        uses: hmarr/auto-approve-action@v3  # Simulating approval (GitHub UI also handles this)
+        if: inputs.environment == 'production'
+        run: echo "Waiting for manual approval..." # GitHub Environments handle approval
 
       - name: Configure AWS CLI
         run: aws configure set region ${{ inputs.aws_region }}
 
       - name: Deploy Resources
         run: |
-          echo "Deploying to environment: ${{ github.event.inputs.environment }}"
+          echo "Deploying to environment: ${{ inputs.environment }}"
           echo "Using AWS region: ${{ inputs.aws_region }}"
           echo "Resource prefix: ${{ inputs.resource_prefix }}"
 
       - name: Notify Deployment Success
-        run: echo "✅ Deployment to ${{ github.event.inputs.environment }} completed!"
+        run: echo "✅ Deployment to ${{ inputs.environment }} completed!"

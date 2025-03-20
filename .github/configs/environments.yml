@@ -1,15 +1,15 @@
 environments:
-  qa:
+  development:
     aws_region: "eu-central-1"
     resource_prefix: "qa"
     auto_deploy: true
 
-  uat:
+  staging:
     aws_region: "eu-central-1"
     resource_prefix: "uat"
     auto_deploy: true
 
-  prod:
+  production:
     aws_region: "us-east-2"
     resource_prefix: "prod"
     auto_deploy: false  # Manual approval needed
