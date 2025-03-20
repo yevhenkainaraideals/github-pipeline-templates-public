@@ -1,0 +1,27 @@
+name: Shared deployment
+
+on:
+  workflow_call:
+
+jobs:
+  deploy-dev:
+    matrix:
+      environment: [development, development2]
+    uses: yevhenkainaraideals/github-pipeline-templates-public/.github/workflows/deploy.yml@main
+    with:
+      environment: ${{ matrix.environment }}
+
+  deploy-stage:
+    needs: deploy-dev
+    matrix:
+        environment: [staging, staging2]
+    uses: yevhenkainaraideals/github-pipeline-templates-public/.github/workflows/deploy.yml@main
+    with:
+      environment: ${{ matrix.environment }}
+
+  deploy-production:
+    needs: deploy-stage
+    uses: yevhenkainaraideals/github-pipeline-templates-public/.github/workflows/deploy.yml@main
+    with:
+      environment: production
+
