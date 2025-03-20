@@ -6,7 +6,6 @@ on:
       environment:
         required: true
         type: string
-#    secrets: inherit  # ✅ Inherits all secrets from the calling workflow
 
 jobs:
   deploy:
@@ -21,10 +20,6 @@ jobs:
         run: |
           git clone https://github.com/yevhenkainaraideals/github-pipeline-templates-public.git environments
           cat environments/environments/${{ inputs.environment }}.yaml
-
-#      - name: Require Manual Approval for Production
-#        if: inputs.environment == 'production'
-#        run: echo "Waiting for manual approval..."  # GitHub Environments handle approval
 
       - name: Configure AWS CLI
         run: |
