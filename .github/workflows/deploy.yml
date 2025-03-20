@@ -27,16 +27,16 @@ jobs:
 
       - name: Require Manual Approval for Production
         if: inputs.environment == 'production'
-        run: echo "Waiting for manual approval..." # GitHub Environments handle approval
+        run: echo "Waiting for manual approval..."  # GitHub Environments handle approval
 
       - name: Configure AWS CLI
         run: aws configure set region ${{ inputs.aws_region }}
 
       - name: Deploy Resources
         run: |
-          echo "Deploying to environment: ${{ inputs.environment }}"
-          echo "Using AWS region: ${{ inputs.aws_region }}"
-          echo "Resource prefix: ${{ inputs.resource_prefix }}"
+          echo "🚀 Deploying to ${{ inputs.environment }}"
+          echo "🌍 AWS Region: ${{ inputs.aws_region }}"
+          echo "🛠️ Resource Prefix: ${{ inputs.resource_prefix }}"
 
       - name: Notify Deployment Success
         run: echo "✅ Deployment to ${{ inputs.environment }} completed!"
