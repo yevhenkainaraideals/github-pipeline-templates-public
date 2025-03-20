@@ -27,13 +27,13 @@ jobs:
 
       - name: Configure AWS CLI
         run: |
-          REGION=$(yq '.aws_region' environments/${{ inputs.environment }}.yaml)
+          REGION=$(yq '.aws_region' environments/environments/${{ inputs.environment }}.yaml)
           aws configure set region $REGION
 
       - name: Deploy Resources
         run: |
-          REGION=$(yq '.aws_region' environments/${{ inputs.environment }}.yaml)
-          PREFIX=$(yq '.resource_prefix' environments/${{ inputs.environment }}.yaml)
+          REGION=$(yq '.aws_region' environments/environments/${{ inputs.environment }}.yaml)
+          PREFIX=$(yq '.resource_prefix' environments/environments/${{ inputs.environment }}.yaml)
           echo "🚀 Deploying to ${{ inputs.environment }}"
           echo "🌍 AWS Region: $REGION"
           echo "🛠️ Resource Prefix: $PREFIX"
