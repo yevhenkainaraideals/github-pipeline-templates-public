@@ -1,0 +1,24 @@
+name: Reusable Deployment Workflow
+
+on:
+  workflow_call:
+    inputs:
+      aws_region:
+        required: true
+        type: string
+      resource_prefix:
+        required: true
+        type: string
+    secrets:
+      AWS_SECRET:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS CLI
+        run: aws configure set region ${{ inputs.aws_region }}
+
+      - name: Deploy Resources
+        run: echo "Deploying with prefix ${{ inputs.resource_prefix }} to AWS region ${{ inputs.aws_region }}"
